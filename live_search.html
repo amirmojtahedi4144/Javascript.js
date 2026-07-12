@@ -1,0 +1,734 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>جستجوی زنده</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Vazirmatn", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 800px;
+    }
+
+    .search-wrapper {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .search-header {
+      text-align: center;
+      margin-bottom: 30px;
+      animation: slideInUp 0.8s ease-out;
+    }
+
+    .search-header h1 {
+      color: #333;
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      font-weight: 700;
+      font-family: "Vazirmatn", sans-serif;
+    }
+
+    .search-header h1 i {
+      color: #667eea;
+      margin-left: 15px;
+    }
+
+    .search-header p {
+      color: #666;
+      font-size: 1.1rem;
+      font-family: "Vazirmatn", sans-serif;
+    }
+
+    .search-box {
+      margin-bottom: 30px;
+      animation: slideInUp 1s ease-out;
+    }
+
+    .search-input-wrapper {
+      position: relative;
+      margin-bottom: 15px;
+    }
+
+    .search-icon {
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #667eea;
+      font-size: 1.2rem;
+      z-index: 2;
+    }
+
+    #searchInput {
+      width: 100%;
+      padding: 18px 60px 18px 20px;
+      border: 2px solid #e1e5e9;
+      border-radius: 15px;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      background: #fff;
+      color: #333;
+      font-family: "Vazirmatn", sans-serif;
+    }
+
+    #searchInput:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      transform: translateY(-2px);
+    }
+
+    #searchInput::placeholder {
+      color: #999;
+      font-family: "Vazirmatn", sans-serif;
+    }
+
+    .clear-btn {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #999;
+      cursor: pointer;
+      font-size: 1.1rem;
+      padding: 5px;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .clear-btn:hover {
+      background: #f0f0f0;
+      color: #666;
+    }
+
+    .clear-btn.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .search-stats {
+      text-align: center;
+      color: #666;
+      font-size: 0.9rem;
+      font-family: "Vazirmatn", sans-serif;
+    }
+
+    .search-results {
+      max-height: 400px;
+      overflow-y: auto;
+      border-radius: 15px;
+      background: #f8f9fa;
+      border: 1px solid #e9ecef;
+    }
+
+    .result-item {
+      padding: 20px;
+      border-bottom: 1px solid #e9ecef;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .result-item:last-child {
+      border-bottom: none;
+    }
+
+    .result-item:hover {
+      background: #fff;
+      transform: translateX(-5px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .result-item img {
+      width: 60px;
+      height: 60px;
+      border-radius: 10px;
+      object-fit: cover;
+      border: 2px solid #e9ecef;
+    }
+
+    .result-info {
+      flex: 1;
+    }
+
+    .result-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 5px;
+      font-family: "Vazirmatn", sans-serif;
+    }
+
+    .result-category {
+      color: #667eea;
+      font-size: 0.9rem;
+      font-weight: 500;
+      font-family: "Vazirmatn", sans-serif;
+    }
+
+    .result-price {
+      color: #28a745;
+      font-weight: 700;
+      font-size: 1.1rem;
+      font-family: "Vazirmatn", sans-serif;
+    }
+
+    .no-results {
+      text-align: center;
+      padding: 40px 20px;
+      color: #666;
+      font-family: "Vazirmatn", sans-serif;
+    }
+
+    .no-results i {
+      font-size: 3rem;
+      color: #ddd;
+      margin-bottom: 15px;
+      display: block;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 40px 20px;
+      color: #667eea;
+    }
+
+    .loading i {
+      animation: spin 1s linear infinite;
+      font-size: 2rem;
+      margin-bottom: 15px;
+      display: block;
+    }
+
+    .loading p {
+      font-size: 0.9rem;
+      color: #666;
+      margin: 0;
+      font-family: "Vazirmatn", sans-serif;
+    }
+
+    /* انیمیشن‌های جستجو */
+    .search-input-wrapper {
+      position: relative;
+      margin-bottom: 15px;
+    }
+
+    .search-results {
+      max-height: 400px;
+      overflow-y: auto;
+      border-radius: 15px;
+      background: #f8f9fa;
+      border: 1px solid #e9ecef;
+      animation: fadeInUp 0.6s ease-out;
+    }
+
+    .result-item {
+      padding: 20px;
+      border-bottom: 1px solid #e9ecef;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .result-item.animate {
+      animation: slideInRight 0.4s ease-out;
+      animation-fill-mode: both;
+    }
+
+    .result-item.animate:nth-child(1) {
+      animation-delay: 0.1s;
+    }
+
+    .result-item.animate:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .result-item.animate:nth-child(3) {
+      animation-delay: 0.3s;
+    }
+
+    .result-item.animate:nth-child(4) {
+      animation-delay: 0.4s;
+    }
+
+    .result-item.animate:nth-child(5) {
+      animation-delay: 0.5s;
+    }
+
+    .result-item.animate:nth-child(6) {
+      animation-delay: 0.6s;
+    }
+
+    @keyframes slideInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slideInRight {
+      from {
+        opacity: 0;
+        transform: translateX(-30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .search-wrapper {
+        padding: 20px;
+        margin: 10px;
+      }
+
+      .search-header h1 {
+        font-size: 2rem;
+      }
+
+      #searchInput {
+        padding: 15px 50px 15px 15px;
+        font-size: 1rem;
+      }
+
+      .result-item {
+        padding: 15px;
+      }
+
+      .result-item img {
+        width: 50px;
+        height: 50px;
+      }
+    }
+
+    /* Scrollbar Styling */
+    .search-results::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .search-results::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 10px;
+    }
+
+    .search-results::-webkit-scrollbar-thumb {
+      background: #c1c1c1;
+      border-radius: 10px;
+    }
+
+    .search-results::-webkit-scrollbar-thumb:hover {
+      background: #a8a8a8;
+    }
+  </style>
+
+  <body>
+    <div class="container">
+      <div class="search-wrapper">
+        <div class="search-header">
+          <h1><i class="fas fa-search"></i> جستجوی زنده</h1>
+          <p>جستجوی سریع و هوشمند در محصولات</p>
+        </div>
+
+        <div class="search-box">
+          <div class="search-input-wrapper">
+            <i class="fas fa-search search-icon"></i>
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="نام محصول را جستجو کنید..."
+              autocomplete="off"
+            />
+            <button id="clearBtn" class="clear-btn">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="search-stats">
+            <span id="resultCount">0 نتیجه</span>
+          </div>
+        </div>
+
+        <div id="searchResults" class="search-results">
+          <!-- نتایج جستجو اینجا نمایش داده می‌شود -->
+        </div>
+      </div>
+    </div>
+    <script>
+      // داده‌های نمونه محصولات
+      const products = [
+        {
+          id: 1,
+          name: "لپ تاپ اپل مک‌بوک پرو",
+          category: "لپ تاپ",
+          price: "85,000,000 تومان",
+          image:
+            "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=150&h=150&fit=crop",
+        },
+        {
+          id: 2,
+          name: "گوشی سامسونگ گلکسی S24",
+          category: "گوشی موبایل",
+          price: "45,000,000 تومان",
+          image:
+            "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=150&h=150&fit=crop",
+        },
+        {
+          id: 3,
+          name: "هدفون سونی WH-1000XM5",
+          category: "هدفون",
+          price: "12,500,000 تومان",
+          image:
+            "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=150&h=150&fit=crop",
+        },
+        {
+          id: 4,
+          name: "ساعت هوشمند اپل واچ",
+          category: "ساعت هوشمند",
+          price: "18,000,000 تومان",
+          image:
+            "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=150&h=150&fit=crop",
+        },
+        {
+          id: 5,
+          name: "تبلت آیپد پرو",
+          category: "تبلت",
+          price: "32,000,000 تومان",
+          image:
+            "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=150&h=150&fit=crop",
+        },
+        {
+          id: 6,
+          name: "دوربین کانن EOS R5",
+          category: "دوربین",
+          price: "95,000,000 تومان",
+          image:
+            "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=150&h=150&fit=crop",
+        },
+        {
+          id: 7,
+          name: "کنسول بازی پلی استیشن 5",
+          category: "کنسول بازی",
+          price: "28,000,000 تومان",
+          image:
+            "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=150&h=150&fit=crop",
+        },
+        {
+          id: 8,
+          name: "اسپیکر بلوتوث JBL",
+          category: "اسپیکر",
+          price: "3,500,000 تومان",
+          image:
+            "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=150&h=150&fit=crop",
+        },
+        {
+          id: 9,
+          name: "کیبورد مکانیکال Razer",
+          category: "کیبورد",
+          price: "8,500,000 تومان",
+          image:
+            "https://images.unsplash.com/photo-1541140532154-b024d705b90a?w=150&h=150&fit=crop",
+        },
+        {
+          id: 10,
+          name: "ماوس گیمینگ Logitech",
+          category: "ماوس",
+          price: "2,800,000 تومان",
+          image:
+            "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=150&h=150&fit=crop",
+        },
+        {
+          id: 11,
+          name: "مانیتور سامسونگ 32 اینچ",
+          category: "مانیتور",
+          price: "15,000,000 تومان",
+          image:
+            "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=150&h=150&fit=crop",
+        },
+        {
+          id: 12,
+          name: "پاوربانک Anker",
+          category: "پاوربانک",
+          price: "1,200,000 تومان",
+          image:
+            "https://images.unsplash.com/photo-1609592806598-04c4d7e5c1a8?w=150&h=150&fit=crop",
+        },
+      ];
+
+      // عناصر DOM
+      const searchInput = document.getElementById("searchInput");
+      const searchResults = document.getElementById("searchResults");
+      const resultCount = document.getElementById("resultCount");
+      const clearBtn = document.getElementById("clearBtn");
+
+      // اگر هر کدام از عناصر بالا در HTML پیدا نشوند (مثلا id اشتباه یا اسکریپت
+      // قبل از لود شدن DOM اجرا شده)، به‌جای اینکه بعدا با ارورهای null مکرر
+      // در کنسول مواجه بشیم، همین ابتدا با پیام واضح متوقف می‌شویم.
+      if (!searchInput || !searchResults || !resultCount || !clearBtn) {
+        console.error(
+          "live_search.js: یک یا چند عنصر DOM (searchInput, searchResults, resultCount, clearBtn) پیدا نشد. مطمئن شوید این اسکریپت بعد از عناصر مربوطه در HTML قرار دارد یا از DOMContentLoaded استفاده می‌کند.",
+        );
+      }
+
+      let debounceTimeout; // تایمر debounce ورودی
+      let searchDelayTimeout; // تایمر شبیه‌سازی تاخیر شبکه
+      let searchRequestId = 0; // شناسه‌ی هر جستجو برای جلوگیری از race condition
+
+      // باگ ۱ فیکس شد: escape کردن کاراکترهای خاص regex
+      // قبلا new RegExp(`(${query})`) با کاراکترهایی مثل ( ) . * + ? [ ] کرش می‌کرد
+      function escapeRegExp(string) {
+        return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      }
+
+      // تابع جستجو
+      function performSearch(query) {
+        if (!query.trim()) {
+          // باگ ۲ فیکس شد: هر جستجوی جدید، جستجوی قبلی در حال انتظار را باطل می‌کند
+          clearTimeout(searchDelayTimeout);
+          searchRequestId++;
+          showAllProducts();
+          return;
+        }
+
+        // نمایش لودینگ
+        showLoading();
+
+        // باگ ۲ فیکس شد: race condition
+        // قبلا این setTimeout ذخیره/کنسل نمی‌شد، پس اگر کاربر سریع تایپ می‌کرد
+        // ممکن بود نتیجه‌ی جستجوی قدیمی‌تر بعد از جستجوی جدید‌تر روی صفحه بنشیند.
+        // با نگه‌داشتن یک requestId، فقط جدیدترین جستجو اجازه‌ی رندر شدن دارد.
+        clearTimeout(searchDelayTimeout);
+        const thisRequestId = ++searchRequestId;
+
+        searchDelayTimeout = setTimeout(() => {
+          if (thisRequestId !== searchRequestId) return; // نتیجه‌ی قدیمی، نادیده گرفته می‌شود
+
+          // باگ "لودینگ مداوم" فیکس شد:
+          // قبلا اگر هر خطایی داخل فیلتر/رندر رخ می‌داد (مثلا یک محصول ناقص)،
+          // اجرای کد همان‌جا متوقف می‌شد و چون showLoading() قبلا اجرا شده بود،
+          // اسپینر "در حال جستجو..." برای همیشه روی صفحه می‌ماند و در کنسول
+          // همان خطا هر بار با تایپ دوباره تکرار می‌شد.
+          // با try/catch/finally مطمئن می‌شویم که در هر حالتی (موفق یا خطا)
+          // وضعیت لودینگ حتما به یک نتیجه‌ی نهایی می‌رسد.
+          try {
+            const lowerQuery = query.toLowerCase();
+            const filteredProducts = products.filter(
+              (product) =>
+                (product.name || "").toLowerCase().includes(lowerQuery) ||
+                (product.category || "").toLowerCase().includes(lowerQuery),
+            );
+
+            displayResults(filteredProducts);
+          } catch (err) {
+            console.error("خطا در اجرای جستجو:", err);
+            searchResults.innerHTML = `
+                    <div class="no-results">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>خطایی در جستجو رخ داد</p>
+                        <small>لطفاً دوباره تلاش کنید</small>
+                    </div>
+                `;
+            resultCount.textContent = "خطا";
+          }
+        }, 500);
+      }
+
+      // نمایش لودینگ
+      function showLoading() {
+        searchResults.innerHTML = `
+        <div class="loading">
+            <i class="fas fa-spinner"></i>
+            <p>در حال جستجو...</p>
+        </div>
+    `;
+        resultCount.textContent = "جستجو...";
+      }
+
+      // نمایش همه محصولات
+      function showAllProducts() {
+        displayResults(products);
+      }
+
+      // نمایش نتایج
+      function displayResults(results) {
+        resultCount.textContent = `${results.length} نتیجه`;
+
+        if (results.length === 0) {
+          searchResults.innerHTML = `
+            <div class="no-results">
+                <i class="fas fa-search"></i>
+                <p>نتیجه‌ای یافت نشد</p>
+                <small>لطفاً کلمات کلیدی دیگری امتحان کنید</small>
+            </div>
+        `;
+          return;
+        }
+
+        const resultsHTML = results
+          .map(
+            (product) => `
+        <div class="result-item animate" onclick="selectProduct(${product.id})">
+            <img src="${product.image}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/60x60/e9ecef/999?text=تصویر'">
+            <div class="result-info">
+                <div class="result-title">${highlightMatch(product.name, searchInput.value)}</div>
+                <div class="result-category">${product.category}</div>
+            </div>
+            <div class="result-price">${product.price}</div>
+        </div>
+    `,
+          )
+          .join("");
+
+        searchResults.innerHTML = resultsHTML;
+      }
+
+      // هایلایت کردن کلمات مطابق
+      function highlightMatch(text, query) {
+        if (!query) return text;
+
+        // باگ ۱ فیکس شد: قبلا escape نمی‌شد و با کاراکترهای خاص regex کرش می‌کرد
+        const safeQuery = escapeRegExp(query);
+        const regex = new RegExp(`(${safeQuery})`, "gi");
+        return text.replace(
+          regex,
+          '<mark style="background: #667eea; color: white; padding: 2px 4px; border-radius: 3px;">$1</mark>',
+        );
+      }
+
+      // انتخاب محصول
+      function selectProduct(productId) {
+        const product = products.find((p) => p.id === productId);
+        if (product) {
+          alert(`محصول انتخاب شده: ${product.name}\nقیمت: ${product.price}`);
+        }
+      }
+
+      // رویدادهای input
+      searchInput.addEventListener("input", (e) => {
+        const query = e.target.value;
+
+        // نمایش/مخفی کردن دکمه پاک کردن
+        if (query) {
+          clearBtn.classList.add("show");
+        } else {
+          clearBtn.classList.remove("show");
+        }
+
+        // تاخیر در جستجو برای عملکرد بهتر
+        clearTimeout(debounceTimeout);
+        debounceTimeout = setTimeout(() => {
+          performSearch(query);
+        }, 200);
+      });
+
+      // رویداد focus
+      searchInput.addEventListener("focus", () => {
+        if (searchInput.value) {
+          clearBtn.classList.add("show");
+        }
+      });
+
+      // رویداد blur
+      // باگ ۳ فیکس شد: قبلا blur زودتر از click روی دکمه اجرا می‌شد و ممکن بود
+      // با حذف کلاس show (بسته به CSS) دکمه غیرقابل‌کلیک بشه.
+      // با mousedown روی دکمه (که قبل از blur اجرا می‌شود) این مشکل رفع شده.
+      searchInput.addEventListener("blur", () => {
+        setTimeout(() => {
+          clearBtn.classList.remove("show");
+        }, 200);
+      });
+
+      clearBtn.addEventListener("mousedown", (e) => {
+        e.preventDefault(); // جلوگیری از blur شدن input قبل از اجرای کلیک
+      });
+
+      // دکمه پاک کردن
+      clearBtn.addEventListener("click", () => {
+        searchInput.value = "";
+        searchInput.focus();
+        clearBtn.classList.remove("show");
+        showAllProducts();
+      });
+
+      // کلیدهای کیبورد
+      searchInput.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          searchInput.value = "";
+          clearBtn.classList.remove("show");
+          showAllProducts();
+        }
+      });
+
+      // نمایش همه محصولات در ابتدا
+      document.addEventListener("DOMContentLoaded", () => {
+        showAllProducts();
+      });
+    </script>
+  </body>
+</html>

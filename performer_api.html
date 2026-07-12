@@ -1,0 +1,1355 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>آزمایش‌کننده API</title>
+    <link
+      href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+    />
+  </head>
+  <style>
+    /* General Styles */
+    :root {
+      /* Modern color palette */
+      --primary-color: #6c63ff;
+      --primary-hover: #5649ff;
+      --secondary-color: #8a7cff;
+      --success-color: #4caf50;
+      --danger-color: #ff5252;
+      --warning-color: #ffc107;
+      --info-color: #2196f3;
+      --light-color: #f5f7fa;
+      --dark-color: #1a1a2e;
+      --border-radius: 0.5rem;
+      --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+
+      /* Light theme variables */
+      --bg-color: #ffffff;
+      --text-color: #2d3748;
+      --card-bg: #ffffff;
+      --input-bg: #ffffff;
+      --border-color: #e2e8f0;
+      --code-bg: #f7fafc;
+      --sidebar-bg: #f8fafc;
+      --hover-bg: #edf2f7;
+      --muted-text: #718096;
+    }
+
+    * {
+      font-family:
+        Vazirmatn,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Oxygen,
+        Ubuntu,
+        sans-serif;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      transition:
+        background-color 0.3s ease,
+        color 0.3s ease;
+    }
+
+    /* Dark theme */
+    body.dark-mode {
+      /* Dark theme colors */
+      --bg-color: #0f0a1e;
+      --text-color: #f1f5f9;
+      --card-bg: #1e1b2e;
+      --input-bg: #1e1b2e;
+      --border-color: #3b3b4d;
+      --code-bg: #1a1625;
+      --sidebar-bg: #1a1625;
+      --hover-bg: #2a2640;
+      --muted-text: #a1a1aa;
+
+      /* Accent colors */
+      --primary-color: #8b5cf6;
+      --primary-hover: #7c3aed;
+      --secondary-color: #a78bfa;
+      --success-color: #10b981;
+      --danger-color: #f43f5e;
+      --warning-color: #f59e0b;
+      --info-color: #3b82f6;
+
+      /* UI Elements */
+      --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+
+      /* Override Bootstrap's default blue colors */
+      --bs-primary: var(--primary-color);
+      --bs-primary-rgb: 139, 92, 246;
+      --bs-primary-bg-subtle: #1e1b2e;
+      --bs-primary-border-subtle: #4c1d95;
+      --bs-primary-text-emphasis: #a78bfa;
+
+      /* Ensure all backgrounds are dark */
+      background-color: var(--bg-color) !important;
+      color: var(--text-color);
+    }
+
+    /* Ensure all cards and containers respect dark mode */
+    body.dark-mode .card,
+    body.dark-mode .modal-content,
+    body.dark-mode .dropdown-menu,
+    body.dark-mode .list-group-item,
+    body.dark-mode .toast,
+    body.dark-mode .offcanvas {
+      background-color: var(--card-bg);
+      color: var(--text-color);
+      border-color: var(--border-color);
+    }
+
+    /* Ensure all form elements respect dark mode */
+    body.dark-mode .form-control,
+    body.dark-mode .form-select,
+    body.dark-mode .form-control:focus,
+    body.dark-mode .form-select:focus,
+    body.dark-mode input,
+    body.dark-mode textarea,
+    body.dark-mode select {
+      background-color: var(--input-bg);
+      color: var(--text-color);
+      border-color: var(--border-color);
+    }
+
+    /* Update all buttons and links to use the new purple */
+    .btn-primary {
+      --bs-btn-color: #fff;
+      --bs-btn-bg: var(--primary-color);
+      --bs-btn-border-color: var(--primary-color);
+      --bs-btn-hover-color: #fff;
+      --bs-btn-hover-bg: var(--primary-hover);
+      --bs-btn-hover-border-color: var(--primary-hover);
+      --bs-btn-focus-shadow-rgb: 167, 139, 250;
+      --bs-btn-active-color: #fff;
+      --bs-btn-active-bg: var(--primary-hover);
+      --bs-btn-active-border-color: var(--primary-hover);
+      --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+      --bs-btn-disabled-color: #fff;
+      --bs-btn-disabled-bg: var(--primary-color);
+      --bs-btn-disabled-border-color: var(--primary-color);
+    }
+
+    /* Update link colors */
+    a {
+      color: var(--primary-color);
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: var(--primary-hover);
+      text-decoration: underline;
+    }
+
+    /* Form elements in dark mode */
+    body.dark-mode {
+      background-color: var(--body-bg);
+      color: var(--text-color);
+    }
+
+    body.dark-mode .form-control,
+    body.dark-mode .form-select,
+    body.dark-mode .form-control:focus,
+    body.dark-mode .form-select:focus,
+    body.dark-mode input,
+    body.dark-mode textarea,
+    body.dark-mode select {
+      background-color: var(--input-bg);
+      color: var(--text-color);
+      border-color: var(--border-color);
+    }
+
+    body.dark-mode .form-control:focus,
+    body.dark-mode .form-select:focus {
+      box-shadow: 0 0 0 0.25rem rgba(58, 134, 255, 0.25);
+      border-color: var(--primary-color);
+    }
+
+    body.dark-mode .form-control::placeholder {
+      color: #6c757d;
+    }
+
+    body.dark-mode .card,
+    body.dark-mode .modal-content {
+      background-color: var(--card-bg);
+      border-color: var(--border-color);
+      color: var(--text-color);
+    }
+
+    body.dark-mode .card-header,
+    body.dark-mode .modal-header,
+    body.dark-mode .modal-footer {
+      background-color: rgba(0, 0, 0, 0.2);
+      border-color: var(--border-color);
+    }
+
+    body.dark-mode .nav-tabs .nav-link {
+      color: #adb5bd;
+      border-color: transparent;
+    }
+
+    body.dark-mode .nav-tabs .nav-link.active {
+      color: var(--primary-color);
+      background-color: transparent;
+      border-color: var(--border-color);
+      border-bottom-color: var(--primary-color);
+    }
+
+    body.dark-mode .nav-tabs {
+      border-bottom-color: var(--border-color);
+    }
+
+    body.dark-mode .tab-content {
+      background-color: var(--card-bg);
+      border-color: var(--border-color);
+      border-top: none;
+    }
+
+    body.dark-mode #response,
+    body.dark-mode #response-headers,
+    body.dark-mode #json-body,
+    body.dark-mode pre {
+      background-color: var(--code-bg);
+      color: #e0e0e0;
+      border-color: var(--border-color);
+    }
+
+    body.dark-mode .params-table th,
+    body.dark-mode .params-table td {
+      border-color: var(--border-color);
+    }
+
+    body.dark-mode .params-table th {
+      background-color: rgba(0, 0, 0, 0.2);
+    }
+
+    body.dark-mode .dropdown-menu {
+      background-color: var(--card-bg);
+      border-color: var(--border-color);
+    }
+
+    body.dark-mode .dropdown-item {
+      color: var(--text-color);
+    }
+
+    body.dark-mode .dropdown-item:hover,
+    body.dark-mode .dropdown-item:focus {
+      background-color: var(--hover-bg);
+      color: #fff;
+    }
+
+    body.dark-mode .text-muted {
+      color: #9e9e9e !important;
+    }
+
+    body.dark-mode .btn-outline-secondary {
+      color: #adb5bd;
+      border-color: var(--border-color);
+    }
+
+    body.dark-mode .btn-outline-secondary:hover {
+      background-color: var(--hover-bg);
+      color: #fff;
+    }
+
+    body.dark-mode .saved-request-item {
+      background-color: var(--input-bg);
+      border-color: var(--border-color);
+    }
+
+    body.dark-mode .saved-request-item:hover {
+      background-color: var(--hover-bg);
+    }
+
+    body.dark-mode .saved-request-url {
+      color: #9e9e9e;
+    }
+
+    body.dark-mode .modal-content {
+      background-color: var(--card-bg);
+      border-color: var(--border-color);
+    }
+
+    body.dark-mode .modal-header,
+    body.dark-mode .modal-footer {
+      border-color: var(--border-color);
+    }
+
+    body.dark-mode .btn-close {
+      filter: invert(1) grayscale(100%) brightness(200%);
+    }
+
+    body.dark-mode .input-group-text {
+      background-color: var(--input-bg);
+      color: var(--text-color);
+      border-color: var(--border-color);
+    }
+
+    /* Scrollbar styling for dark mode */
+    body.dark-mode::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    body.dark-mode::-webkit-scrollbar-track {
+      background: var(--bg-color);
+    }
+
+    body.dark-mode::-webkit-scrollbar-thumb {
+      background: #555;
+      border-radius: 5px;
+    }
+
+    body.dark-mode::-webkit-scrollbar-thumb:hover {
+      background: #777;
+    }
+
+    body.dark-mode .card,
+    body.dark-mode .modal-content {
+      background-color: var(--card-bg);
+      border-color: var(--border-color);
+    }
+
+    body.dark-mode .nav-tabs .nav-link {
+      color: #adb5bd;
+    }
+
+    body.dark-mode .nav-tabs .nav-link.active {
+      color: #fff;
+      border-bottom-color: var(--primary-color);
+    }
+
+    body.dark-mode .nav-tabs {
+      border-bottom-color: var(--border-color);
+    }
+
+    body.dark-mode .tab-content {
+      background-color: var(--card-bg);
+      border-color: var(--border-color);
+    }
+
+    body.dark-mode #response,
+    body.dark-mode #response-headers,
+    body.dark-mode #json-body {
+      background-color: var(--code-bg);
+      color: #e6e6e6;
+      border-color: var(--border-color);
+    }
+
+    body.dark-mode .params-table th,
+    body.dark-mode .params-table td {
+      border-color: var(--border-color);
+    }
+
+    body.dark-mode .params-table th {
+      background-color: var(--input-bg);
+    }
+
+    body.dark-mode .dropdown-menu {
+      background-color: var(--card-bg);
+      border-color: var(--border-color);
+    }
+
+    body.dark-mode .dropdown-item {
+      color: var(--text-color);
+    }
+
+    body.dark-mode .dropdown-item:hover {
+      background-color: var(--hover-bg);
+      color: #fff;
+    }
+
+    /* Dark mode toggle button */
+    .dark-mode-toggle {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 1.5rem;
+      z-index: 1000;
+      width: 3rem;
+      height: 3rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--primary-color);
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .dark-mode-toggle:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.25);
+    }
+
+    body.dark-mode .dark-mode-toggle {
+      background: var(--primary-hover);
+    }
+
+    /* Save/Load buttons */
+    #saveRequestBtn,
+    #loadRequestBtn {
+      transition: all 0.2s ease;
+    }
+
+    #saveRequestBtn:hover,
+    #loadRequestBtn:hover {
+      transform: translateY(-1px);
+    }
+
+    /* Modal styles */
+    #savedRequestsModal .modal-content {
+      background-color: var(--card-bg);
+      color: var(--text-color);
+    }
+
+    #savedRequestsModal .modal-header {
+      border-bottom-color: var(--border-color);
+    }
+
+    #savedRequestsModal .modal-footer {
+      border-top-color: var(--border-color);
+    }
+
+    .saved-request-item {
+      padding: 0.75rem 1rem;
+      margin-bottom: 0.5rem;
+      background-color: var(--input-bg);
+      border-radius: 0.25rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid var(--border-color);
+    }
+
+    .saved-request-item:hover {
+      background-color: var(--hover-bg);
+      transform: translateX(5px);
+    }
+
+    .saved-request-method {
+      font-weight: bold;
+      margin-left: 0.5rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 0.25rem;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+    }
+
+    .saved-request-method.get {
+      background-color: #2ecc71;
+      color: white;
+    }
+    .saved-request-method.post {
+      background-color: #3498db;
+      color: white;
+    }
+    .saved-request-method.put {
+      background-color: #f39c12;
+      color: white;
+    }
+    .saved-request-method.delete {
+      background-color: #e74c3c;
+      color: white;
+    }
+
+    .saved-request-name {
+      font-weight: 500;
+    }
+
+    .saved-request-url {
+      color: #adb5bd;
+      font-size: 0.85rem;
+      direction: ltr;
+      text-align: right;
+      display: block;
+      margin-top: 0.25rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Scrollbar styles */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg-color);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--secondary-color);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--primary-color);
+    }
+
+    /* Card Styles */
+    .card {
+      border: none;
+      box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.08);
+      transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+      overflow: hidden;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.12);
+    }
+
+    .card-header {
+      font-weight: 700;
+      border-bottom: none;
+    }
+
+    /* Form Styles */
+    .form-control,
+    .form-select {
+      padding: 0.6rem 1rem;
+      border-radius: var(--border-radius);
+      border: 1px solid #dee2e6;
+      transition:
+        border-color 0.15s ease-in-out,
+        box-shadow 0.15s ease-in-out;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 0.25rem rgba(67, 97, 238, 0.25);
+    }
+
+    /* Button Styles */
+    .btn {
+      border-radius: var(--border-radius);
+      padding: 0.5rem 1.25rem;
+      font-weight: 500;
+      transition: all 0.2s ease-in-out;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .btn-primary {
+      background-color: var(--primary-color);
+      border-color: var(--primary-color);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
+      border-color: var(--primary-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-outline-primary {
+      color: var(--primary-color);
+      border-color: var(--primary-color);
+    }
+
+    .btn-outline-primary:hover {
+      background-color: var(--primary-color);
+      border-color: var(--primary-color);
+      color: white;
+    }
+
+    .btn-danger {
+      background-color: var(--danger-color);
+      border-color: var(--danger-color);
+    }
+
+    .btn-danger:hover {
+      background-color: #c0392b;
+      border-color: #b83326;
+    }
+
+    /* Tab Styles */
+    .nav-tabs {
+      border-bottom: 1px solid #dee2e6;
+      margin-bottom: 0;
+    }
+
+    .nav-tabs .nav-link {
+      border: none;
+      color: var(--secondary-color);
+      font-weight: 500;
+      padding: 0.75rem 1.25rem;
+      border-radius: 0;
+      margin-bottom: -1px;
+      transition: all 0.2s ease;
+    }
+
+    .nav-tabs .nav-link:hover {
+      border-color: transparent;
+      color: var(--primary-color);
+    }
+
+    .nav-tabs .nav-link.active {
+      color: var(--primary-color);
+      background-color: transparent;
+      border-bottom: 3px solid var(--primary-color);
+      font-weight: 600;
+    }
+
+    /* Response Area */
+    #response,
+    #response-headers,
+    #json-body {
+      font-family: "Vazir Code", "Fira Code", "Cascadia Code", monospace;
+      font-size: 0.9rem;
+      white-space: pre-wrap;
+      word-break: break-word;
+      background-color: #f8f9fa;
+      border-radius: 0.25rem;
+      padding: 1rem;
+      max-height: 500px;
+      overflow-y: auto;
+    }
+
+    #json-body {
+      min-height: 150px;
+      resize: vertical;
+      width: 100%;
+      border: 1px solid #dee2e6;
+      border-radius: 0.25rem;
+    }
+
+    /* Loading Animation */
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .spinner-border {
+      width: 2.5rem;
+      height: 2.5rem;
+      border-width: 0.25rem;
+    }
+
+    /* Status Badges */
+    .badge {
+      font-weight: 500;
+      padding: 0.4em 0.8em;
+      border-radius: 50rem;
+      font-size: 0.85rem;
+    }
+
+    /* Dark Mode Toggle */
+    .dark-mode-toggle {
+      position: fixed;
+      bottom: 2rem;
+      left: 2rem;
+      z-index: 1000;
+      width: 3.5rem;
+      height: 3.5rem;
+      border-radius: 50%;
+      display: flex !important;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #6c63ff 0%, #8a7cff 100%);
+      box-shadow: 0 4px 20px rgba(108, 99, 255, 0.3);
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      color: white;
+      font-size: 1.5rem;
+      border: none;
+      outline: none;
+      animation: pulse 2s infinite;
+    }
+
+    .dark-mode-toggle:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 8px 25px rgba(108, 99, 255, 0.4);
+    }
+
+    .dark-mode-toggle:active {
+      transform: translateY(0) scale(0.95);
+    }
+
+    .dark-mode .dark-mode-toggle {
+      background: linear-gradient(135deg, #818cf8 0%, #6366f1 100%);
+      box-shadow: 0 4px 20px rgba(129, 140, 248, 0.3);
+    }
+
+    .dark-mode .dark-mode-toggle:hover {
+      box-shadow: 0 8px 25px rgba(129, 140, 248, 0.4);
+    }
+
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(108, 99, 255, 0.4);
+      }
+      70% {
+        box-shadow: 0 0 0 12px rgba(108, 99, 255, 0);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(108, 99, 255, 0);
+      }
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      .card {
+        border-radius: 0;
+      }
+
+      .input-group > .form-select {
+        width: auto;
+      }
+
+      .btn {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.9rem;
+      }
+
+      .nav-tabs .nav-link {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.85rem;
+      }
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #c1c1c1;
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #a8a8a8;
+    }
+
+    /* Animation for success */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-in {
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    /* Custom checkbox */
+    .form-check-input:checked {
+      background-color: var(--primary-color);
+      border-color: var(--primary-color);
+    }
+
+    /* Tooltip */
+    .tooltip-inner {
+      font-family: Vazirmatn, sans-serif;
+      font-size: 0.8rem;
+      padding: 0.4rem 0.8rem;
+      border-radius: 0.25rem;
+    }
+
+    /* Documentation styles */
+    #api-documentation h5 {
+      font-weight: 700;
+      color: var(--dark-color);
+    }
+
+    #api-documentation .endpoint {
+      border-radius: 0.5rem;
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+      border-right: 4px solid var(--primary-color);
+    }
+
+    #api-documentation .method {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 0.25rem;
+      font-weight: 600;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      margin-left: 0.5rem;
+      color: white;
+    }
+
+    #api-documentation .method.get {
+      background-color: #2ecc71;
+    }
+
+    #api-documentation .method.post {
+      background-color: #3498db;
+    }
+
+    #api-documentation .method.put {
+      background-color: #f39c12;
+    }
+
+    #api-documentation .method.delete {
+      background-color: #e74c3c;
+    }
+
+    #api-documentation .description {
+      color: #6c757d;
+      margin: 0.5rem 0 1rem;
+    }
+
+    #api-documentation .params-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+    }
+
+    #api-documentation .params-table th,
+    #api-documentation .params-table td {
+      padding: 0.75rem;
+      text-align: right;
+      border-bottom: 1px solid #dee2e6;
+    }
+
+    #api-documentation .params-table th {
+      font-weight: 600;
+      background-color: #f8f9fa;
+    }
+
+    #api-documentation .params-table tr:last-child td {
+      border-bottom: none;
+    }
+  </style>
+  <body>
+    <div
+      class="dark-mode-toggle"
+      id="darkModeToggle"
+      title="تغییر حالت روشن/تاریک"
+    >
+      <i class="bi bi-moon-fill"></i>
+    </div>
+
+    <div class="container mt-5">
+      <div class="row justify-content-center">
+        <div class="col-lg-10">
+          <div class="card shadow-lg border-0 rounded-4">
+            <div
+              class="card-header bg-primary text-white rounded-top-4 d-flex justify-content-between align-items-center"
+            >
+              <h3 class="mb-0 py-2">آزمایش‌کننده API</h3>
+              <div class="btn-group" role="group">
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline-light"
+                  id="saveRequestBtn"
+                  title="ذخیره درخواست"
+                >
+                  <i class="bi bi-save"></i>
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline-light"
+                  id="loadRequestBtn"
+                  title="بارگذاری درخواست‌ها"
+                >
+                  <i class="bi bi-folder2-open"></i>
+                </button>
+              </div>
+            </div>
+            <div class="card-body p-4">
+              <div class="mb-4">
+                <div class="input-group mb-3">
+                  <select id="method" class="form-select w-auto">
+                    <option value="GET">GET</option>
+                    <option value="POST">POST</option>
+                    <option value="PUT">PUT</option>
+                    <option value="DELETE">DELETE</option>
+                  </select>
+                  <input
+                    type="text"
+                    id="url"
+                    class="form-control"
+                    placeholder="آدرس API را وارد کنید..."
+                    value="https://jsonplaceholder.typicode.com/posts"
+                  />
+                  <button id="send" class="btn btn-primary">
+                    <i class="bi bi-send-fill"></i> ارسال
+                  </button>
+                </div>
+
+                <div id="request-options" class="mb-3">
+                  <ul class="nav nav-tabs" id="requestTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      <button
+                        class="nav-link active"
+                        id="params-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#params"
+                        type="button"
+                        role="tab"
+                      >
+                        پارامترها
+                      </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button
+                        class="nav-link"
+                        id="headers-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#headers"
+                        type="button"
+                        role="tab"
+                      >
+                        هد‌ها
+                      </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button
+                        class="nav-link"
+                        id="body-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#body"
+                        type="button"
+                        role="tab"
+                      >
+                        بدنه
+                      </button>
+                    </li>
+                  </ul>
+                  <div
+                    class="tab-content p-3 border border-top-0 rounded-bottom"
+                    id="requestTabsContent"
+                  >
+                    <div
+                      class="tab-pane fade show active"
+                      id="params"
+                      role="tabpanel"
+                    >
+                      <div id="params-container">
+                        <div class="row g-2 mb-2 param-row">
+                          <div class="col-md-5">
+                            <input
+                              type="text"
+                              class="form-control param-key"
+                              placeholder="کلید"
+                            />
+                          </div>
+                          <div class="col-md-5">
+                            <input
+                              type="text"
+                              class="form-control param-value"
+                              placeholder="مقدار"
+                            />
+                          </div>
+                          <div class="col-md-2">
+                            <button
+                              class="btn btn-sm btn-danger w-100 remove-param"
+                            >
+                              <i class="bi bi-trash"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                      <button
+                        id="add-param"
+                        class="btn btn-sm btn-outline-primary mt-2"
+                      >
+                        <i class="bi bi-plus"></i> افزودن پارامتر
+                      </button>
+                    </div>
+                    <div class="tab-pane fade" id="headers" role="tabpanel">
+                      <div id="headers-container">
+                        <div class="row g-2 mb-2 header-row">
+                          <div class="col-md-5">
+                            <input
+                              type="text"
+                              class="form-control header-key"
+                              placeholder="نام هدر (مثلا: Content-Type)"
+                            />
+                          </div>
+                          <div class="col-md-5">
+                            <input
+                              type="text"
+                              class="form-control header-value"
+                              placeholder="مقدار هدر"
+                            />
+                          </div>
+                          <div class="col-md-2">
+                            <button
+                              class="btn btn-sm btn-danger w-100 remove-header"
+                            >
+                              <i class="bi bi-trash"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                      <button
+                        id="add-header"
+                        class="btn btn-sm btn-outline-primary mt-2"
+                      >
+                        <i class="bi bi-plus"></i> افزودن هدر
+                      </button>
+                    </div>
+                    <div class="tab-pane fade" id="body" role="tabpanel">
+                      <div
+                        class="d-flex justify-content-between align-items-center mb-2"
+                      >
+                        <div class="form-check form-switch">
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            id="raw-body-toggle"
+                          />
+                          <label class="form-check-label" for="raw-body-toggle"
+                            >بدنه خام</label
+                          >
+                        </div>
+                        <div>
+                          <button
+                            id="format-json"
+                            class="btn btn-sm btn-outline-secondary"
+                          >
+                            <i class="bi bi-braces"></i> فرمت JSON
+                          </button>
+                          <button
+                            id="clear-body"
+                            class="btn btn-sm btn-outline-danger"
+                          >
+                            <i class="bi bi-trash"></i> پاک کردن
+                          </button>
+                        </div>
+                      </div>
+                      <div id="body-container">
+                        <div id="form-body" class="d-none">
+                          <div id="form-fields">
+                            <div class="row g-2 mb-2 form-field">
+                              <div class="col-md-5">
+                                <input
+                                  type="text"
+                                  class="form-control form-key"
+                                  placeholder="کلید"
+                                />
+                              </div>
+                              <div class="col-md-5">
+                                <input
+                                  type="text"
+                                  class="form-control form-value"
+                                  placeholder="مقدار"
+                                />
+                              </div>
+                              <div class="col-md-2">
+                                <button
+                                  class="btn btn-sm btn-danger w-100 remove-form-field"
+                                >
+                                  <i class="bi bi-trash"></i>
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                          <button
+                            id="add-form-field"
+                            class="btn btn-sm btn-outline-primary mt-2"
+                          >
+                            <i class="bi bi-plus"></i> افزودن فیلد
+                          </button>
+                        </div>
+                        <div id="raw-body">
+                          <textarea
+                            id="json-body"
+                            class="form-control font-monospace"
+                            rows="10"
+                            placeholder='{
+    "key": "value"
+}'
+                          ></textarea>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <div
+                  class="d-flex justify-content-between align-items-center mb-2"
+                >
+                  <h5 class="mb-0">پاسخ</h5>
+                  <div>
+                    <span id="status" class="badge bg-secondary me-2"
+                      >آماده</span
+                    >
+                    <span id="response-time" class="text-muted small"></span>
+                  </div>
+                </div>
+                <div class="position-relative">
+                  <div
+                    class="d-flex justify-content-between align-items-center mb-2"
+                  >
+                    <ul class="nav nav-tabs" id="responseTabs" role="tablist">
+                      <li class="nav-item" role="presentation">
+                        <button
+                          class="nav-link active"
+                          id="response-body-tab"
+                          data-bs-toggle="tab"
+                          data-bs-target="#response-body"
+                          type="button"
+                          role="tab"
+                        >
+                          پاسخ
+                        </button>
+                      </li>
+                      <li class="nav-item" role="presentation">
+                        <button
+                          class="nav-link"
+                          id="response-headers-tab"
+                          data-bs-toggle="tab"
+                          data-bs-target="#response-headers"
+                          type="button"
+                          role="tab"
+                        >
+                          هد‌ها
+                        </button>
+                      </li>
+                      <li class="nav-item" role="presentation">
+                        <button
+                          class="nav-link"
+                          id="documentation-tab"
+                          data-bs-toggle="tab"
+                          data-bs-target="#documentation"
+                          type="button"
+                          role="tab"
+                        >
+                          مستندات
+                        </button>
+                      </li>
+                    </ul>
+                    <div>
+                      <button
+                        id="copy-response"
+                        class="btn btn-sm btn-outline-secondary"
+                        title="کپی پاسخ"
+                      >
+                        <i class="bi bi-clipboard"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <div
+                    class="tab-content border rounded p-3"
+                    style="min-height: 200px"
+                  >
+                    <div
+                      class="tab-pane fade show active"
+                      id="response-body"
+                      role="tabpanel"
+                    >
+                      <pre id="response" class="mb-0">
+پاسخی دریافت نشده است. برای شروع روی دکمه ارسال کلیک کنید.</pre
+                      >
+                    </div>
+                    <div
+                      class="tab-pane fade"
+                      id="response-headers"
+                      role="tabpanel"
+                    >
+                      <pre id="response-headers" class="mb-0">-</pre>
+                    </div>
+                    <div
+                      class="tab-pane fade"
+                      id="documentation"
+                      role="tabpanel"
+                    >
+                      <div id="api-documentation">
+                        <h5 class="border-bottom pb-2 mb-3">مستندات API</h5>
+                        <div id="endpoint-docs">
+                          <p class="text-muted">
+                            پس از ارسال درخواست، مستندات به صورت خودکار ایجاد
+                            می‌شود.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    id="loading"
+                    class="position-absolute top-50 start-50 translate-middle text-center d-none"
+                  >
+                    <div class="spinner-border text-primary" role="status">
+                      <span class="visually-hidden">در حال بارگذاری...</span>
+                    </div>
+                    <p class="mt-2 mb-0">در حال ارسال درخواست...</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="text-center mt-3 text-muted small">
+            ساخته شده با <i class="bi bi-heart-fill text-danger"></i> |
+            آزمایش‌کننده API
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Save Request Modal -->
+    <div
+      class="modal fade"
+      id="saveRequestModal"
+      tabindex="-1"
+      aria-labelledby="saveRequestModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="saveRequestModalLabel">
+              ذخیره درخواست
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="requestName" class="form-label">نام درخواست</label>
+              <input
+                type="text"
+                class="form-control"
+                id="requestName"
+                placeholder="مثلا: دریافت لیست کاربران"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="requestDescription" class="form-label"
+                >توضیحات (اختیاری)</label
+              >
+              <textarea
+                class="form-control"
+                id="requestDescription"
+                rows="2"
+                placeholder="توضیحات در مورد این درخواست"
+              ></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              انصراف
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              id="confirmSaveRequest"
+            >
+              ذخیره
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Saved Requests Modal -->
+    <div
+      class="modal fade"
+      id="savedRequestsModal"
+      tabindex="-1"
+      aria-labelledby="savedRequestsModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="savedRequestsModalLabel">
+              درخواست‌های ذخیره شده
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="input-group mb-3">
+              <input
+                type="text"
+                id="savedRequestsSearch"
+                class="form-control"
+                placeholder="جستجو در درخواست‌ها..."
+              />
+              <button
+                class="btn btn-outline-secondary"
+                type="button"
+                id="clearSearch"
+              >
+                <i class="bi bi-x-lg"></i>
+              </button>
+            </div>
+            <div id="savedRequestsList" class="list-group">
+              <!-- Saved requests will be loaded here -->
+              <div class="text-center py-4 text-muted" id="noRequestsMessage">
+                <i class="bi bi-inbox display-5"></i>
+                <p class="mt-2 mb-0">درخواست ذخیره‌شده‌ای وجود ندارد</p>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-danger me-auto"
+              id="clearAllRequests"
+            >
+              <i class="bi bi-trash"></i> حذف همه
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              بستن
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/JS/performer_api.js"></script>
+  </body>
+</html>
